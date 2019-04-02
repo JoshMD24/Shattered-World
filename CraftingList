@@ -1,0 +1,44 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CraftingList : MonoBehaviour {
+
+    public bool craftingList = false;
+
+    // Use this for initialization
+    void Start()
+    {
+        GetComponent<Canvas>().renderMode = RenderMode.WorldSpace;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetButtonDown("CraftingList"))
+        {
+            if (craftingList)
+            {
+                NotActive();
+            }
+            else
+            {
+                Activate();
+            }
+        }
+    }
+
+    void NotActive()
+    {
+        GetComponent<Canvas>().renderMode = RenderMode.WorldSpace;
+        craftingList = false;
+    }
+
+    void Activate()
+    {
+        GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+        craftingList = true;
+    }
+
+}
+
