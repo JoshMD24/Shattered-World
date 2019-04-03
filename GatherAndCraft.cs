@@ -28,6 +28,12 @@ public class GatherAndCraft : MonoBehaviour {
     public Text woodWallText;
     int _woodRoof;
     public Text woodRoofText;
+    int _stoneFoundation;
+    public Text stoneFoundationText;
+    int _stoneWall;
+    public Text stoneWallText;
+    int _stoneRoof;
+    public Text stoneRoofText;
 
     public GameObject GatherWood;
     public GameObject GatherThatch;
@@ -41,6 +47,9 @@ public class GatherAndCraft : MonoBehaviour {
     public bool canCraftWoodFoundation = false;
     public bool canCraftWoodWall = false;
     public bool canCraftWoodRoof = false;
+    public bool canCraftStoneFoundation = false;
+    public bool canCraftStoneWall = false;
+    public bool canCraftStoneRoof = false;
 
     public static GatherAndCraft instance;
 
@@ -56,8 +65,17 @@ public class GatherAndCraft : MonoBehaviour {
         GetComponent<BoxCollider>().size = new Vector3(0.0f, 0.0f, 0.0f); //size
         GetComponent<BoxCollider>().center = new Vector3(0.0f, 0.0f, 0.0f); //location
 
+        wood = 1000;
+        stone = 1000;
+        thatch = 1000;
+        fiber = 1000;
+
         woodFoundation = 0;
-        Debug.Log(woodFoundation);
+        woodWall = 0;
+        woodRoof = 0;
+        stoneFoundation = 0;
+        stoneWall = 0;
+        stoneRoof = 0;
     }
 
     void Update() //When we click we will move the trigger in front of the player and when we release we will move it back
@@ -83,6 +101,18 @@ public class GatherAndCraft : MonoBehaviour {
         if (wood >= 8 && thatch >= 16 && fiber >= 12)
         {
             canCraftWoodRoof = true;
+        }
+        if (stone >= 24 && wood >= 20 && thatch >= 16)
+        {
+            canCraftStoneFoundation = true;
+        }
+        if (stone >= 8 && wood >= 6 && thatch >= 4)
+        {
+            canCraftStoneWall = true;
+        }
+        if (stone >= 16 && wood >= 12 && thatch >= 8)
+        {
+            canCraftStoneRoof = true;
         }
     }
 
@@ -206,7 +236,44 @@ public class GatherAndCraft : MonoBehaviour {
             wood = wood - 8;
             thatch = thatch - 16;
             fiber = fiber - 12;
+            woodRoof += 1;
             Debug.Log(woodRoof);
+        }
+    }
+
+    public void StoneFoundation()
+    {
+        if (canCraftStoneFoundation == true)
+        {
+            Debug.Log("Stone foundation crafted");
+            stone = stone - 24;
+            wood = wood - 20;
+            thatch = thatch - 16;
+            stoneFoundation += 1;
+        }
+    }
+
+    public void StoneWall()
+    {
+        if (canCraftStoneWall == true)
+        {
+            Debug.Log("Stone wall crafted");
+            stone = stone - 8;
+            wood = wood - 6;
+            thatch = thatch - 4;
+            stoneWall += 1;
+        }
+    }
+
+    public void StoneRoof()
+    {
+        if (canCraftStoneRoof == true)
+        {
+            Debug.Log("Stone roof crafted");
+            stone = stone - 16;
+            wood = wood - 12;
+            thatch = thatch - 8;
+            stoneRoof += 1;
         }
     }
 
@@ -317,7 +384,7 @@ public class GatherAndCraft : MonoBehaviour {
         }
     }
 
-    public int hide //this is how we will add up how much fiber we have
+    public int hide //this is how we will add up how much hide we have
     {
         get //get current amount
         {
@@ -332,7 +399,7 @@ public class GatherAndCraft : MonoBehaviour {
         }
     }
 
-    public int woodFoundation //this is how we will add up how much stone we have
+    public int woodFoundation 
     {
         get //get current amount
         {
@@ -343,11 +410,11 @@ public class GatherAndCraft : MonoBehaviour {
         {
             _woodFoundation = value;
             if (woodFoundationText)
-                woodFoundationText.text = "Wood Foundations: " + flint; //change stone text to display new amount
+                woodFoundationText.text = "Wood Foundations: " + woodFoundation;
         }
     }
 
-    public int woodWall //this is how we will add up how much stone we have
+    public int woodWall
     {
         get //get current amount
         {
@@ -362,7 +429,7 @@ public class GatherAndCraft : MonoBehaviour {
         }
     }
 
-    public int woodRoof //this is how we will add up how much stone we have
+    public int woodRoof
     {
         get //get current amount
         {
@@ -374,6 +441,51 @@ public class GatherAndCraft : MonoBehaviour {
             _woodRoof = value;
             if (woodRoofText)
                 woodRoofText.text = "Wood Roofs: " + woodRoof; //change stone text to display new amount
+        }
+    }
+
+    public int stoneFoundation 
+    {
+        get //get current amount
+        {
+            return _stoneFoundation;
+        }
+
+        set //set new amount
+        {
+            _stoneFoundation = value;
+            if (stoneFoundationText)
+                stoneFoundationText.text = "Stone Foundations: " + stoneFoundation; //change stone text to display new amount
+        }
+    }
+
+    public int stoneWall 
+    {
+        get //get current amount
+        {
+            return _stoneWall;
+        }
+
+        set //set new amount
+        {
+            _stoneWall = value;
+            if (stoneWallText)
+                stoneWallText.text = "Stone Walls: " + stoneWall; //change stone text to display new amount
+        }
+    }
+
+    public int stoneRoof 
+    {
+        get //get current amount
+        {
+            return _stoneRoof;
+        }
+
+        set //set new amount
+        {
+            _stoneRoof = value;
+            if (stoneRoofText)
+                stoneRoofText.text = "Stone Roofs: " + stoneRoof; //change stone text to display new amount
         }
     }
 
