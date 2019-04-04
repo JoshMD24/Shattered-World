@@ -64,7 +64,7 @@ public class GatherAndCraft : MonoBehaviour {
     {
         GetComponent<BoxCollider>().size = new Vector3(0.0f, 0.0f, 0.0f); //size
         GetComponent<BoxCollider>().center = new Vector3(0.0f, 0.0f, 0.0f); //location
-
+//set resources to 1000 for testing purposes
         wood = 1000;
         stone = 1000;
         thatch = 1000;
