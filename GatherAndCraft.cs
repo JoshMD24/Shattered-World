@@ -44,12 +44,12 @@ public class GatherAndCraft : MonoBehaviour {
     public GameObject GatherMeat;
     public GameObject GatherHide;
 
-    public bool canCraftWoodFoundation = false;
-    public bool canCraftWoodWall = false;
-    public bool canCraftWoodRoof = false;
-    public bool canCraftStoneFoundation = false;
-    public bool canCraftStoneWall = false;
-    public bool canCraftStoneRoof = false;
+     bool canCraftWoodFoundation = false;
+     bool canCraftWoodWall = false;
+     bool canCraftWoodRoof = false;
+     bool canCraftStoneFoundation = false;
+     bool canCraftStoneWall = false;
+     bool canCraftStoneRoof = false;
 
     public static GatherAndCraft instance;
 
