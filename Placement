@@ -1,0 +1,189 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Placement : MonoBehaviour
+{
+
+    bool canPlaceWoodFoundation = false;
+    bool canPlaceWoodWall = false;
+    bool canPlaceWoodRoof = false;
+    bool canPlaceStoneFoundation = false;
+    bool canPlaceStoneWall = false;
+    bool canPlaceStoneRoof = false;
+
+    public bool canBuildFoundation = false;
+    public bool canBuildWall = false;
+    public bool canBuildRoof = false;
+
+    public GameObject WoodFoundation;
+    public GameObject WoodWall;
+    public GameObject WoodRoof;
+    public GameObject StoneFoundation;
+    public GameObject StoneWall;
+    public GameObject StoneRoof;
+
+    public Transform PlacementPoint;
+
+     Vector3 PlaceLocation;
+
+    public static Placement instance;
+
+    void Awake()
+    {
+        instance = this;
+    }
+
+    void Update()
+    {
+        PlaceLocation.x = PlacementPoint.position.x;
+        PlaceLocation.y = PlacementPoint.position.y;
+        PlaceLocation.z = PlacementPoint.position.z;
+
+        if (GatherAndCraft.instance.woodFoundation >= 1)
+        {
+            canPlaceWoodFoundation = true;
+        }
+        if (GatherAndCraft.instance.woodWall >= 1)
+        {
+            canPlaceWoodWall = true;
+        }
+        if (GatherAndCraft.instance.woodRoof >= 1)
+        {
+            canPlaceWoodRoof = true;
+        }
+        if (GatherAndCraft.instance.stoneFoundation >= 1)
+        {
+            canPlaceStoneFoundation = true;
+        }
+        if (GatherAndCraft.instance.stoneWall >= 1)
+        {
+            canPlaceStoneWall = true;
+        }
+        if (GatherAndCraft.instance.stoneRoof >= 1)
+        {
+            canPlaceStoneRoof = true;
+        }
+        if (GatherAndCraft.instance.woodFoundation < 1)
+        {
+            canPlaceWoodFoundation = false;
+        }
+        if (GatherAndCraft.instance.woodWall < 1)
+        {
+            canPlaceWoodWall = false;
+        }
+        if (GatherAndCraft.instance.woodRoof < 1)
+        {
+            canPlaceWoodRoof = false;
+        }
+        if (GatherAndCraft.instance.stoneFoundation < 1)
+        {
+            canPlaceStoneFoundation = false;
+        }
+        if (GatherAndCraft.instance.stoneWall < 1)
+        {
+            canPlaceStoneWall = false;
+        }
+        if (GatherAndCraft.instance.stoneRoof < 1)
+        {
+            canPlaceStoneRoof = false;
+        }
+        if (PlacePoint.instance.inFoundationPlaceMode == true)
+        {
+            canBuildFoundation = true;
+        }
+        if (PlacePoint.instance.inWallPlaceMode == true)
+        {
+            canBuildWall = true;
+        }
+        if (PlacePoint.instance.inRoofPlaceMode == true)
+        {
+            canBuildRoof = true; 
+        }
+        if(PlacePoint.instance.inFoundationPlaceMode == false)
+        {
+            canBuildFoundation = false;
+        }
+        if (PlacePoint.instance.inWallPlaceMode == false)
+        {
+            canBuildWall = false;
+        }
+        if (PlacePoint.instance.inRoofPlaceMode == false)
+        {
+            canBuildRoof = false;
+        }
+    }
+
+   public void PlaceWoodFoundation()
+    {
+        if (canPlaceWoodFoundation == true && canBuildFoundation == true)
+        {
+            Debug.Log("Placed wood Foundation");
+            GatherAndCraft.instance.woodFoundation--;
+            Instantiate(WoodFoundation, new Vector3(PlaceLocation.x, PlaceLocation.y, PlaceLocation.z), Quaternion.Euler(0, 0, 0));
+            PlacePoint.instance.inPlaceMode = false;
+            PlacePoint.instance.inFoundationPlaceMode = false;
+        }
+    }
+
+    public void PlaceWoodWall()
+    {
+        if (canPlaceWoodWall == true && canBuildWall == true)
+        {
+            Debug.Log("Placed wood wall");
+            GatherAndCraft.instance.woodWall--;
+            Instantiate(WoodWall, new Vector3(PlaceLocation.x, PlaceLocation.y, PlaceLocation.z), Quaternion.Euler(0, 0, 0));
+            PlacePoint.instance.inPlaceMode = false;
+            PlacePoint.instance.inWallPlaceMode = false;
+        }
+    }
+
+    public void PlaceWoodRoof()
+    {
+        if (canPlaceWoodRoof == true && canBuildRoof == true)
+        {
+            Debug.Log("Placed wood roof");
+            GatherAndCraft.instance.woodRoof--;
+            Instantiate(WoodRoof, new Vector3(PlaceLocation.x, PlaceLocation.y, PlaceLocation.z), Quaternion.Euler(0, 0, 0));
+            PlacePoint.instance.inPlaceMode = false;
+            PlacePoint.instance.inRoofPlaceMode = false;
+        }
+    }
+
+    public void PlaceStoneFoundation()
+    {
+        if (canPlaceStoneFoundation == true && canBuildFoundation == true)
+        {
+            Debug.Log("Placeed stone foundation");
+            GatherAndCraft.instance.stoneFoundation--;
+            Instantiate(StoneFoundation, new Vector3(PlaceLocation.x, PlaceLocation.y, PlaceLocation.z), Quaternion.Euler(0, 0, 0));
+            PlacePoint.instance.inPlaceMode = false;
+            PlacePoint.instance.inFoundationPlaceMode = false;
+        }
+    }
+
+   public void PlaceStoneWall()
+    {
+        if (canPlaceStoneWall == true && canBuildWall == true)
+        {
+            Debug.Log("Placed stone wall");
+            GatherAndCraft.instance.stoneWall--;
+            Instantiate(StoneWall, new Vector3(PlaceLocation.x, PlaceLocation.y, PlaceLocation.z), Quaternion.Euler(0, 0, 0));
+            PlacePoint.instance.inPlaceMode = false;
+            PlacePoint.instance.inWallPlaceMode = false;
+        }
+    }
+
+    public void PlaceStoneRoof()
+    {
+        if (canPlaceStoneRoof == true && canBuildRoof == true)
+        {
+            Debug.Log("Placed stone roof");
+            GatherAndCraft.instance.stoneRoof--;
+            Instantiate(StoneRoof, new Vector3(PlaceLocation.x, PlaceLocation.y, PlaceLocation.z), Quaternion.Euler(0, 0, 0));
+            PlacePoint.instance.inPlaceMode = false;
+            PlacePoint.instance.inRoofPlaceMode = false;
+        }
+    }
+
+}
