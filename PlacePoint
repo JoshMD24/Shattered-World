@@ -1,0 +1,76 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlacePoint : MonoBehaviour {
+
+    public Transform PlaceMode;
+
+    Vector3 PlaceVector;
+
+    public bool inPlaceMode = false;
+    public bool inFoundationPlaceMode = false;
+    public bool inWallPlaceMode = false;
+    public bool inRoofPlaceMode = false;
+
+    public static PlacePoint instance;
+
+    void Awake()
+    {
+        instance = this;
+    }
+
+	// Use this for initialization
+	void Start () {
+        GetComponent<BoxCollider>().size = new Vector3(0.0f, 0.0f, 0.0f);
+        GetComponent<MeshRenderer>().enabled = false;
+	}
+
+    void Update()
+    {
+        PlaceVector.x = PlaceMode.position.x;
+        PlaceVector.y = PlaceMode.position.y;
+        PlaceVector.z = PlaceMode.position.z + 3.0f;
+        if(inPlaceMode == false)
+        {
+            GetComponent<BoxCollider>().size = new Vector3(0.0f, 0.0f, 0.0f);
+            GetComponent<MeshRenderer>().enabled = false;
+        }
+    }
+	
+	public void FoundationPlacement()
+    {
+        GetComponent<BoxCollider>().size = new Vector3(1.0f, 0.1f, 1.0f);
+        GetComponent<MeshRenderer>().enabled = true;
+        transform.localScale = new Vector3(1.0f, 0.1f, 1.0f);
+        transform.position = new Vector3(PlaceVector.x, 0.0f, PlaceVector.z);
+        inPlaceMode = true;
+        inFoundationPlaceMode = true;
+        inWallPlaceMode = false;
+        inRoofPlaceMode = false;
+    }
+
+   public void WallPlacement()
+    {
+        GetComponent<BoxCollider>().size = new Vector3(1.0f, 3.0f, 0.1f);
+        GetComponent<MeshRenderer>().enabled = true;
+        transform.localScale = new Vector3(1.0f, 3.0f, 0.1f);
+        transform.position = new Vector3(PlaceVector.x, PlaceVector.y, PlaceVector.z);
+        inPlaceMode = true;
+        inWallPlaceMode = true;
+        inFoundationPlaceMode = false;
+        inRoofPlaceMode = false;
+    }
+
+   public void RoofPlacement()
+    {
+        GetComponent<BoxCollider>().size = new Vector3(1.0f, 0.1f, 1.0f);
+        GetComponent<MeshRenderer>().enabled = true;
+        transform.localScale = new Vector3(1.0f, 0.1f, 1.0f);
+        transform.position = new Vector3(PlaceVector.x, 3.0f, PlaceVector.z);
+        inPlaceMode = true;
+        inRoofPlaceMode = true;
+        inWallPlaceMode = false;
+        inFoundationPlaceMode = false;
+    }
+}
