@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,6 +17,10 @@ public class ApplyStats : MonoBehaviour {
     public float maxStrength;
     public float maxSurvival;
     public float maxSpeed;
+    public float hunger;
+    public float thirst;
+    public float starvation;
+    public float dehydration;
     public Text maxHealthText;
     public Text maxStaminaText;
     public Text maxWeightText;
@@ -30,13 +34,17 @@ public class ApplyStats : MonoBehaviour {
     public Text currentSurvivalText;
     public Text currentSpeedText;
 
+    public bool isSprinting;
+    public bool inCombat;
+    public bool hasSkillPoint = false;
+
     void Awake()
     {
         instance = this;
     }
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         strength = 1;
         health = 100;
@@ -49,7 +57,10 @@ public class ApplyStats : MonoBehaviour {
         maxStrength = 1;
         maxSurvival = 0;
         maxSpeed = 3;
-	}
+        hunger = 100;
+        thirst = 100;
+        isSprinting = false;
+    }
 
     void Update()
     {
@@ -65,39 +76,176 @@ public class ApplyStats : MonoBehaviour {
         currentStrengthText.text = "Strength: " + strength;
         currentSurvivalText.text = "Survival: " + survival;
         currentSpeedText.text = "Speed: " + Movement.instance.moveSpeed;
+        starvation = 0.01f;
+        dehydration = 0.01f;
+
+        //Health code
+        if (health < maxHealth)
+        {
+            health = health += 0.1f;
+        }
+
+        if(health > maxHealth)
+        {
+            health = maxHealth;
+        }
+
+        //Stamina code
+        if(stamina > maxStamina)
+        {
+            stamina = maxStamina;
+        }
+        if (isSprinting == false && stamina < maxStamina)
+        {
+            StartCoroutine(Sprinting());
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            Debug.Log("Sprinting");
+            sprinting();
+            isSprinting = true;
+        }
+        else if (Input.GetButtonUp("Sprint"))
+        {
+            isSprinting = false;
+        }
+
+        //Weight code
+        if(weight > maxWeight)
+        {
+            Debug.Log("Over Weight");
+            Movement.instance.moveSpeed = 0.0f;
+        }
+        if(weight <= maxWeight)
+        {
+            Movement.instance.moveSpeed = Movement.instance.maxMoveSpeed;
+        }
+
+        if(Movement.instance.sprint == true)
+        {
+            Movement.instance.moveSpeed = Movement.instance.moveSpeed * 1.5f;
+        }
+
+        //Strength code
+        strength = maxStrength;
+
+        //Hunger/Thirst code
+        hunger = hunger - starvation; //code starvation so survival can affect starvation
+        if (hunger < 0)
+        {
+            hunger = 0;
+        }
+        thirst = thirst - dehydration;
+        if (thirst < 0)
+        {
+            thirst = 0;
+        }
+        if(hunger == 0)
+        {
+            health = health - 0.1f;
+        }
+        if(thirst == 0)
+        {
+            health = health - 0.1f;
+        }
+        if(Experience.instance.skillPoints >= 1)
+        {
+            hasSkillPoint = true;
+        }
+        if(Experience.instance.skillPoints == 0)
+        {
+            hasSkillPoint = false;
+        }
     }
-	
+    
+	void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "Tiger")
+        {
+            health = health - 30;
+
+            if(health <= 0)
+            {
+                die();
+            }
+        }
+    }
+
 	public void LevelUpStrength()
     {
-        Stats.instance.strengthStatLevel = Stats.instance.strengthStatLevel + 1;
-        strength += 0.5f;
-        maxStrength += 0.5f;
+        if (hasSkillPoint == true)
+        {
+            Stats.instance.strengthStatLevel = Stats.instance.strengthStatLevel + 1;
+            strength += 0.5f;
+            maxStrength += 0.5f;
+            Experience.instance.skillPoints--;
+        }
     }
 
     public void LevelUpHealth()
     {
-        Stats.instance.healthStatLevel = Stats.instance.healthStatLevel + 1;
-        health += 10;
-        maxHealth += 10;
+        if (hasSkillPoint == true)
+        {
+            Stats.instance.healthStatLevel = Stats.instance.healthStatLevel + 1;
+            health += 10;
+            maxHealth += 10;
+            Experience.instance.skillPoints--;
+        }
     }
 
     public void LevelUpStamina()
     {
-        Stats.instance.staminaStatLevel = Stats.instance.staminaStatLevel + 1;
-        stamina += 10;
-        maxStamina += 10;
+        if (hasSkillPoint == true)
+        {
+            Stats.instance.staminaStatLevel = Stats.instance.staminaStatLevel + 1;
+            stamina += 10;
+            maxStamina += 10;
+            Experience.instance.skillPoints--;
+        }
     }
 
     public void LevelUpWeight()
     {
-        Stats.instance.weightStatLevel = Stats.instance.weightStatLevel + 1;
-        maxWeight += 10;
+        if (hasSkillPoint == true)
+        {
+            Stats.instance.weightStatLevel = Stats.instance.weightStatLevel + 1;
+            maxWeight += 10;
+            Experience.instance.skillPoints--;
+        }
     }
 
     public void LevelUpSurvival()
     {
-        Stats.instance.survivalStatLevel = Stats.instance.survivalStatLevel + 1;
-        survival += 10;
-        maxSurvival += 10;
+        if (hasSkillPoint == true)
+        {
+            Stats.instance.survivalStatLevel = Stats.instance.survivalStatLevel + 1;
+            survival += 0.01f;
+            maxSurvival += 0.01f;
+            Experience.instance.skillPoints--;
+        }
     }
+
+    void die()
+    {
+        Destroy(this.gameObject);
+    }
+
+    void sprinting()
+    {
+        stamina = stamina - 0.1f;
+    }
+
+    IEnumerator Sprinting()
+    {
+        yield return new WaitForSeconds(0.5f);
+        stamina = stamina + 0.1f;
+    }
+
+    IEnumerator InCombat()
+    {
+        yield return new WaitForSeconds(5.0f);
+        inCombat = false;
+    }
+
 }
