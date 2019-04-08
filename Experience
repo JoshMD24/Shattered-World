@@ -1,0 +1,83 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Experience : MonoBehaviour {
+    public static Experience instance;
+
+    public int XP = 0;
+    public int playerLevel = 1;
+    public int skillPoints = 0;
+
+
+	// Use this for initialization
+	void Awake ()
+    {
+        instance = this;
+	}
+	
+	// Update is called once per frame
+	void Update ()
+    {
+        if (XP >= 100 && playerLevel == 1)
+        {
+            skillPoints++;
+            playerLevel++;
+            XP = 0;
+        }
+        if (XP >= 125 && playerLevel == 2)
+        {
+            skillPoints++;
+            playerLevel++;
+            XP = 0;
+        }
+        if (XP >= 150 && playerLevel == 3)
+        {
+            skillPoints++;
+            playerLevel++;
+            XP = 0;
+        }
+        if (XP >= 175 && playerLevel == 4)
+        {
+            skillPoints++;
+            playerLevel++;
+            XP = 0;
+        }
+        if (XP >= 200 && playerLevel == 5)
+        {
+            skillPoints++;
+            playerLevel++;
+            XP = 0;
+        }
+        if (XP >= 225 && playerLevel == 6)
+        {
+            skillPoints++;
+            playerLevel++;
+            XP = 0;
+        }
+        if (XP >= 250 && playerLevel == 7)
+        {
+            skillPoints++;
+            playerLevel++;
+            XP = 0;
+        }
+        if (XP >= 275 && playerLevel == 8)
+        {
+            skillPoints++;
+            playerLevel++;
+            XP = 0;
+        }
+        if (XP >= 300 && playerLevel == 9)
+        {
+            skillPoints++;
+            playerLevel++;
+            XP = 0;
+        }
+        if (XP >= 325 && playerLevel == 10)
+        {
+            skillPoints++;
+            playerLevel++;
+            XP = 0;
+        }
+	}
+}
